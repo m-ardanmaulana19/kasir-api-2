@@ -31,9 +31,23 @@ func main() {
 		_ = viper.ReadInConfig()
 	}
 
+	// Get config with fallback to os.Getenv (for Railway)
+	port := viper.GetString("PORT")
+	if port == "" {
+		port = os.Getenv("PORT")
+	}
+	if port == "" {
+		port = "8080"
+	}
+
+	dbConn := viper.GetString("DB_CONN")
+	if dbConn == "" {
+		dbConn = os.Getenv("DB_CONN")
+	}
+
 	config := Config{
-		Port:   viper.GetString("PORT"),
-		DBConn: viper.GetString("DB_CONN"),
+		Port:   port,
+		DBConn: dbConn,
 	}
 
 	// ========================================
