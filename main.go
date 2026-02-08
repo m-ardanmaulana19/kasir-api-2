@@ -75,6 +75,11 @@ func main() {
 	transactionService := services.NewTransactionService(transactionRepo)
 	transactionHandler := handlers.NewTransactionHandler(transactionService)
 
+	// Report
+	reportRepo := repositories.NewReportRepository(db)
+	reportService := services.NewReportService(reportRepo)
+	reportHandler := handlers.NewReportHandler(reportService)
+
 	// ========================================
 	// Setup Routes
 	// ========================================
@@ -88,6 +93,10 @@ func main() {
 
 	// Transaction routes
 	http.HandleFunc("/api/checkout", transactionHandler.HandleCheckout) // POST
+
+	// Report routes
+	http.HandleFunc("/api/report/hari-ini", reportHandler.HandleDailyReport) // GET
+	http.HandleFunc("/api/report", reportHandler.HandleReport)               // GET with query params
 
 	// Health check
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
