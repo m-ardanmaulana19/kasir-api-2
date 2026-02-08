@@ -14,6 +14,22 @@ CREATE TABLE products (
     category_id INTEGER REFERENCES categories(id) ON DELETE SET NULL
 );
 
+-- Create transactions table
+CREATE TABLE IF NOT EXISTS transactions (
+    id SERIAL PRIMARY KEY,
+    total_amount INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create transaction_details table
+CREATE TABLE IF NOT EXISTS transaction_details (
+    id SERIAL PRIMARY KEY,
+    transaction_id INT REFERENCES transactions(id) ON DELETE CASCADE,
+    product_id INT REFERENCES products(id),
+    quantity INT NOT NULL,
+    subtotal INT NOT NULL
+);
+
 -- Insert sample categories
 INSERT INTO categories (name, description) VALUES
 ('Minuman', 'Berbagai macam minuman'),
